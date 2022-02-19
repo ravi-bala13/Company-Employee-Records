@@ -2,14 +2,15 @@ import { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Home } from "./components/Home";
+import { Employee } from "./components/Employee";
+import { Navbar } from "./components/Navbar";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <div className="App">
-      sdjfghsd
-      <Home />
+    <Employee />
+  
     </div>
   );
 }
