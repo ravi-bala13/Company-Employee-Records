@@ -3,12 +3,13 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Home } from "./components/Home";
 import { Employee } from "./components/Employee";
-import { Navbar } from "./components/Navbar";
+import { Details } from "./components/Details";
 
 function App() {
   return (
     <div className="App">
       <Home />
+      <Details />
     </div>
   );
 }
