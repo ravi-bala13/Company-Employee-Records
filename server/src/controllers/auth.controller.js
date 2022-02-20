@@ -3,10 +3,10 @@ const jwt = require("jsonwebtoken");
 
 const Employer = require("../models/employer.model");
 
-console.log("JWT_ACCESS_KEY:", process.env.JWT_ACCESS_KEY);
+// console.log("JWT_ACCESS_KEY:", process.env.JWT_ACCESS_KEY);
 const newToken = (employer) => {
-  // return jwt.sign({ employer: employer }, process.env.JWT_ACCESS_KEY);
-  return jwt.sign({ employer: employer }, "bala");
+  return jwt.sign({ employer: employer }, process.env.JWT_ACCESS_KEY);
+  // return jwt.sign({ employer: employer }, "bala");
 };
 
 const register = async (req, res) => {
@@ -20,7 +20,7 @@ const register = async (req, res) => {
     if (employer)
       return res.status(400).json({
         status: "failed",
-        message: " Please provide a different email address",
+        message: " There is already account in this email address",
       });
 
     // else we will create the employer we will hash the password as plain text password is harmful
