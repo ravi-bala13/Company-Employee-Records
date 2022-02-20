@@ -1,4 +1,6 @@
 import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../Redux/action";
 
 import "../CSS/Home.css";
 
@@ -6,13 +8,18 @@ export const Home = () => {
   const [login_set, setLogin_set] = useState("for_login1");
   const [signup_set, setSignup_set] = useState("for_signup2");
 
+  const { token } = useSelector((state) => state);
+  console.log("token:", token);
+
+  const dispatch = useDispatch();
+
   const [form_details, setForm_details] = useState({
     email: "",
     password: "",
   });
 
   const changetoLogin = () => {
-    // alert("works")
+    // alert("works");
     setLogin_set("for_login1");
     setSignup_set("for_signup2");
   };
@@ -42,6 +49,9 @@ export const Home = () => {
           console.log("res:", res);
           if (res.status) {
             alert(res.message);
+          } else {
+            alert("Registered successfully");
+            changetoLogin();
           }
         });
     } catch (error) {
@@ -69,6 +79,9 @@ export const Home = () => {
           console.log("res:", res);
           if (res.status) {
             alert(res.message);
+          } else {
+            dispatch(loginSuccess(res.token));
+            alert("Login Successfully");
           }
         });
     } catch (error) {
@@ -99,12 +112,12 @@ export const Home = () => {
           <div className="contents">
             <div className={login_set}>
               <div>
-                <h3>LOGIN HERE</h3>
+                <h3 className="heading">LOGIN HERE</h3>
               </div>
               <div className="logging_in" onSubmit={SubmitLogin}>
                 <form id="login_form">
                   <input
-                    placeholder="Enter Email"
+                    placeholder="Enter Email here to login"
                     id="login_mail"
                     name="email"
                     onChange={handleChange}
@@ -126,7 +139,7 @@ export const Home = () => {
 
             <div className={signup_set}>
               <div>
-                <h3>SIGN-UP HERE</h3>
+                <h3 className="heading">SIGN-UP HERE</h3>
               </div>
               <div className="signing_up">
                 <form id="signup_form" onSubmit={SubmitRegister}>

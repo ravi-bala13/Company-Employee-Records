@@ -17,9 +17,17 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const employee = await Employee.find().lean().exec();
+    const page = +req.query.page || 1;
+    const size = +req.query.size || 10;
 
-    return res.status(200).json(employee);
+    const skip = (page - 1) * size;
+
+    const employee = await Employee.find().skip(skip).limit(size).lean().exec();
+    const totalPages = Math.ceil(
+      (await Employee.find().countDocuments()) / size
+    );
+
+    return res.status(200).json({ employee, totalPages });
   } catch (error) {
     console.log("error:", error);
     return res.status(500).json({ status: "Failed", message: error });
