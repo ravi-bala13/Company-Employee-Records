@@ -2,11 +2,13 @@
 import { useDispatch } from "react-redux";
 import "../CSS/Navbar.css";
 import { logoutSuccess } from "../Redux/action";
+import { clearData } from "../utils/sessionStorage";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
 
   const logOut = () => {
+    clearData();
     dispatch(logoutSuccess());
   };
 

@@ -1,7 +1,7 @@
 import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from "./actionTypes";
 
 export const loginSuccess = (token) => {
-  console.log("token:", token);
+  // console.log("token:", token);
   return {
     type: LOGIN_SUCCESS,
     payload: token,

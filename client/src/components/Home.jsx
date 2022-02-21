@@ -4,13 +4,14 @@ import { loginSuccess } from "../Redux/action";
 
 import "../CSS/Home.css";
 import { Navigate } from "react-router-dom";
+import { saveData } from "../utils/sessionStorage";
 
 export const Home = () => {
   const [login_set, setLogin_set] = useState("for_login1");
   const [signup_set, setSignup_set] = useState("for_signup2");
 
   const { token } = useSelector((state) => state);
-  console.log("token:", token);
+  // console.log("token:", token);
 
   const dispatch = useDispatch();
 
@@ -37,7 +38,7 @@ export const Home = () => {
 
   const SubmitRegister = (e) => {
     e.preventDefault();
-    console.log("form_details:", form_details);
+    // console.log("form_details:", form_details);
 
     try {
       fetch(`http://localhost:2526/register`, {
@@ -47,7 +48,7 @@ export const Home = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log("res:", res);
+          // console.log("res:", res);
           if (res.status) {
             alert(res.message);
           } else {
@@ -67,7 +68,7 @@ export const Home = () => {
 
   const SubmitLogin = (e) => {
     e.preventDefault();
-    console.log("form_details:", form_details);
+    // console.log("form_details:", form_details);
 
     try {
       fetch(`http://localhost:2526/login`, {
@@ -77,13 +78,14 @@ export const Home = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log("res:", res);
+          // console.log("res:", res);
           if (res.status) {
             alert(res.message);
           } else {
+            // sessionStorage(res.token);
+            saveData("token", res.token);
             dispatch(loginSuccess(res.token));
-            // alert("Login Successfully");
-            // return <Navigate to={"/employee"} />;
+            alert("Login Successfully");
           }
         });
     } catch (error) {
@@ -131,6 +133,7 @@ export const Home = () => {
                   ></input>
 
                   <input
+                    type="password"
                     placeholder="Enter Password"
                     id="login_password"
                     name="password"
@@ -158,6 +161,7 @@ export const Home = () => {
                     onChange={handleChange}
                   ></input>
                   <input
+                    type="password"
                     placeholder="Enter Password"
                     id="sign_password"
                     name="password"
