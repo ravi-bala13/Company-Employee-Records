@@ -1,7 +1,15 @@
 //import { useContext, useState } from "react"
+import { useDispatch } from "react-redux";
 import "../CSS/Navbar.css";
+import { logoutSuccess } from "../Redux/action";
 
 export const Navbar = () => {
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(logoutSuccess());
+  };
+
   return (
     <div>
       <div id="navbar">
@@ -16,7 +24,7 @@ export const Navbar = () => {
             </button>
           </div>
           <div>
-            <button>Log Out</button>
+            <button onClick={logOut}>Log Out</button>
           </div>
         </div>
       </div>

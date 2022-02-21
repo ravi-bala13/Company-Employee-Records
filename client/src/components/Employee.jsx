@@ -1,60 +1,91 @@
 import { Navbar } from "./Navbar";
-import "../CSS/Employee.css"
+import "../CSS/Employee.css";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-export const Employee= () => {
-    
-    return <div>
-       <div id="screen_emp">
-           <Navbar />
-       <div className="blank1"></div>
-           
-       <div className="inner_block">
-           <div><h2>EMPLOYEE DETAILS...</h2></div>
-           <div className="table">
-              <div className="table_head">
-                  <div className="serial_num">SL.No</div>
-                  <div className="emp_name">Employee Name</div>
-                  <div className="depatment">Department</div>
-                  <div className="gender">Gender</div>
-                  <div className="emp_age">Age</div>
-                  <div className="emp_salary">Salary</div> 
-              </div>  
-             
+export const Employee = () => {
+  const [employee_details, setEmployee_details] = useState([]);
+  console.log("employee_details:", employee_details);
+  const [page, setPage] = useState(0);
+  const [skip, setskip] = useState(0);
 
-             {/* The below "table content" should be made dynamic acoording to the data */}
-              <div className="table_content">
-              <div className="table_sub_content">
-                  <div className="serial_num">1</div>
-                  <div className="emp_name">priya</div>
-                  <div className="depatment">ITI</div>
-                  <div className="gender">female</div>
-                  <div className="emp_age">22</div>
-                  <div className="emp_salary">40000</div> 
-              </div> 
+  const { token } = useSelector((state) => state);
+  console.log("token:", token);
 
-              <div className="table_sub_content">
-                  <div className="serial_num">1</div>
-                  <div className="emp_name">priya</div>
-                  <div className="depatment">ITI</div>
-                  <div className="gender">female</div>
-                  <div className="emp_age">22</div>
-                  <div className="emp_salary">40000</div> 
-              </div> 
-              </div>
+  const handleSkip = () => {
+    let tem = page * 6;
+    setskip(tem);
+  };
 
-              
-           </div>
-        
-       </div>
+  useEffect(() => {
+    getEmployees();
+    handleSkip();
+  }, [page]);
+
+  const getEmployees = () => {
+    try {
+      fetch(`http://localhost:2526/employee?page=${page}&size=6`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("data:", data);
+          setEmployee_details(data.employee);
+        });
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  if (token == "") {
+    return <Navigate to={"/"} />;
+  }
+
+  return (
+    <div>
+      <div id="screen_emp">
+        <Navbar />
+        <div className="blank1"></div>
+
+        <div className="inner_block">
+          <div>
+            <h2>EMPLOYEE DETAILS...</h2>
+          </div>
+          <div className="table">
+            <div className="table_head">
+              <div className="serial_num">SL.No</div>
+              <div className="emp_name">Employee Name</div>
+              <div className="depatment">Department</div>
+              <div className="gender">Gender</div>
+              <div className="emp_age">Age</div>
+              <div className="emp_salary">Salary</div>
+            </div>
+
+            {/* The below "table content" should be made dynamic acoording to the data */}
+
+            <div className="table_content">
+              {employee_details.map((item, i) => (
+                <div className="table_sub_content" key={item._id}>
+                  <div className="serial_num">{i + 1 + skip}</div>
+                  <div className="emp_name"> {item.name} </div>
+                  <div className="depatment"> {item.department} </div>
+                  <div className="gender"> {item.gender} </div>
+                  <div className="emp_age">{item.age}</div>
+                  <div className="emp_salary"> {item.salary} </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* The below should be changed for pagination according to the datas */}
-       <div className="pages_count">
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-       </div>
+        <div className="pages_count">
+          <button onClick={() => setPage((prev) => prev - 1)}> {"<"} </button>
+          <h5>.......</h5>
+          <button onClick={() => setPage((prev) => prev + 1)}>{">"}</button>
+        </div>
 
-       <div className="blank1"></div>
-       </div>
+        <div className="blank1"></div>
+      </div>
     </div>
-}
+  );
+};

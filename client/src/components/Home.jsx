@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../Redux/action";
 
 import "../CSS/Home.css";
+import { Navigate } from "react-router-dom";
 
 export const Home = () => {
   const [login_set, setLogin_set] = useState("for_login1");
@@ -81,7 +82,8 @@ export const Home = () => {
             alert(res.message);
           } else {
             dispatch(loginSuccess(res.token));
-            alert("Login Successfully");
+            // alert("Login Successfully");
+            // return <Navigate to={"/employee"} />;
           }
         });
     } catch (error) {
@@ -93,6 +95,10 @@ export const Home = () => {
       password: "",
     });
   };
+
+  if (token.length > 10) {
+    return <Navigate to={"/employee"}></Navigate>;
+  }
 
   return (
     <div>
